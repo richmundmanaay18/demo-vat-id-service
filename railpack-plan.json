@@ -1,0 +1,9 @@
+{
+  "setup": {
+    "mise": {
+      "packages": {
+        "java": "17"
+      }
+    }
+  }
+}
