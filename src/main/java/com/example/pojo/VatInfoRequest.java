@@ -8,12 +8,12 @@ public class VatInfoRequest {
 
     @NotNull
     @NotBlank
-    @Schema(description = "This is the 2 letter country code",example = "AT = Austria")
+    @Schema(description = "This is the 2 letter country code",example = "PL = Poland")
     private String countryCode;
 
     @NotNull
     @NotBlank
-    @Schema(description = "This is the vat id",example = "AT1234567")
+    @Schema(description = "This is the vat id",example = "PL7272445205")
     private String id;
 
     public String getCountryCode() {
