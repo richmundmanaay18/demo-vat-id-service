@@ -1,2 +1,17 @@
 [build]
-project_root = "demo-vat-id-service"
+builder = "nixpacks"
+
+# Force Java 17
+[build.nixpacksPlan]
+providers = ["java"]
+
+[build.nixpacksPlan.install]
+packages = ["jdk17"]
+
+[build.nixpacksPlan.build]
+cmds = [
+    "./gradlew build -x test"
+]
+
+[deploy]
+start = "java -jar build/libs/*.jar"
