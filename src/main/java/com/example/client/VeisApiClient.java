@@ -4,6 +4,8 @@ import com.example.interceptor.LoggingInterceptor;
 import com.example.pojo.VatInfoRequest;
 import eu.viesapi.client.VIESAPIClient;
 import eu.viesapi.client.VIESData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,9 @@ public class VeisApiClient {
     private final RestClient restClient;
     JdkClientHttpRequestFactory jdkClientHttpRequestFactory = new JdkClientHttpRequestFactory();
 
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
     public VeisApiClient(RestClient.Builder restClientBuilder) {
         this.restClient = restClientBuilder.baseUrl("https://viesapi.eu")
                 .requestFactory(new BufferingClientHttpRequestFactory(jdkClientHttpRequestFactory))
@@ -27,11 +32,15 @@ public class VeisApiClient {
 
     public String validateUsingRestAPI(VatInfoRequest vatInfoRequest){
         String authToken = "Basic dGVzdF9pZDp0ZXN0X2tleQ==";
-        return restClient.get()
-                .uri( "/api-test/get/vies/euvat/" + vatInfoRequest.getId())
+        String response = restClient.get()
+                .uri("/api-test/get/vies/euvat/" + vatInfoRequest.getId())
                 .header("Authorization", authToken)
                 .retrieve()
                 .body(String.class);
+
+        redisTemplate.opsForValue().set(vatInfoRequest.getId(), response);
+
+        return response;
     }
 
     public String validateUsingLibrary(VatInfoRequest vatInfoRequest) throws MalformedURLException {

@@ -37,7 +37,7 @@ dependencies {
 
 	//redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'redis.clients:jedis'
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
