@@ -16,6 +16,6 @@ public class DemoVatIdServiceApplication {
 	@PostConstruct
 	public void printRedisConfig() {
 		System.out.println("🔍 REDIS_URL = " + System.getenv("REDIS_URL"));
-		System.out.println("🔍 SPRING_DATA_REDIS_HOST = " + System.getenv("SPRING_DATA_REDIS_HOST"));
+		System.out.println("🔍 SPRING_DATA_REDIS_HOST = " + System.getenv("REDIS_HOST"));
 	}
 }
