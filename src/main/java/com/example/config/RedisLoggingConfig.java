@@ -12,7 +12,6 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import java.util.logging.Logger;
 
 @Configuration
-@Slf4j
 public class RedisLoggingConfig {
 
     @Autowired
