@@ -13,6 +13,7 @@ import org.springframework.web.client.RestClient;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 @Component
 public class VeisApiClient {
@@ -31,16 +32,22 @@ public class VeisApiClient {
     }
 
     public String validateUsingRestAPI(VatInfoRequest vatInfoRequest){
-        String authToken = "Basic dGVzdF9pZDp0ZXN0X2tleQ==";
-        String response = restClient.get()
-                .uri("/api-test/get/vies/euvat/" + vatInfoRequest.getId())
-                .header("Authorization", authToken)
-                .retrieve()
-                .body(String.class);
 
-        redisTemplate.opsForValue().set(vatInfoRequest.getId(), response);
+        String apiResponseCache = Objects.requireNonNull(redisTemplate.opsForValue().get(vatInfoRequest.getId())).toString();
 
-        return response;
+        if(!apiResponseCache.isEmpty()){
+            return apiResponseCache;
+        }else{
+            String authToken = "Basic dGVzdF9pZDp0ZXN0X2tleQ==";
+            String response = restClient.get()
+                    .uri("/api-test/get/vies/euvat/" + vatInfoRequest.getId())
+                    .header("Authorization", authToken)
+                    .retrieve()
+                    .body(String.class);
+
+            redisTemplate.opsForValue().set(vatInfoRequest.getId(), response);
+            return response;
+        }
     }
 
     public String validateUsingLibrary(VatInfoRequest vatInfoRequest) throws MalformedURLException {
